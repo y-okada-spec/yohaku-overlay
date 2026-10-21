@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>メンズアイドル風 配信オーバーレイ</title>
+  <style>
+    /* 全体設定（背景透過） */
+    body {
+      margin: 0;
+      padding: 0;
+      width: 1080px;
+      height: 1920px;
+      overflow: hidden;
+      background-color: transparent;
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+      box-sizing: border-box;
+    }
+
+    /* 1. サイリウムゲージ（画面下部・ヘッダー兼用） */
+    .penlight-container {
+      position: absolute;
+      top: 40px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 900px;
+      background: rgba(10, 10, 25, 0.85);
+      border: 2px solid #a855f7;
+      border-radius: 20px;
+      padding: 20px 30px;
+      box-shadow: 0 0 25px rgba(168, 85, 247, 0.5);
+      color: #fff;
+    }
+
+    .penlight-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    .penlight-title {
+      font-size: 24px;
+      font-weight: bold;
+      letter-spacing: 2px;
+      color: #f0abfc;
+      text-shadow: 0 0 10px #c084fc;
+    }
+
+    .penlight-count {
+      font-size: 28px;
+      font-weight: 800;
+      color: #38bdf8;
+    }
+
+    .gauge-bg {
+      width: 100%;
+      height: 24px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      overflow: hidden;
+      position: relative;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .gauge-fill {
+      width: 65%; /* ★ゲージの進捗率（パーセントで変更可能） */
+      height: 100%;
+      background: linear-gradient(90deg, #ec4899, #a855f7, #3b82f6);
+      box-shadow: 0 0 15px #c084fc;
+      border-radius: 12px;
+      transition: width 0.5s ease-in-out;
+    }
+
+    /* 2. 本日の最前列（VIP名札フレーム） */
+    .vip-container {
+      position: absolute;
+      bottom: 60px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 960px;
+      display: flex;
+      justify-content: space-around;
+      align-items: flex-end;
+    }
+
+    .vip-card {
+      width: 280px;
+      background: linear-gradient(135deg, rgba(20, 20, 35, 0.9), rgba(40, 20, 60, 0.9));
+      border: 2px solid #ffd700;
+      border-radius: 16px;
+      padding: 15px;
+      text-align: center;
+      box-shadow: 0 0 20px rgba(255, 215, 0, 0.4);
+      position: relative;
+    }
+
+    /* 1位（中央）を少し豪華・大きめにする */
+    .vip-card.rank-1 {
+      transform: scale(1.1);
+      border-color: #ffd700;
+      box-shadow: 0 0 30px rgba(255, 215, 0, 0.8);
+      order: 2;
+    }
+    .vip-card.rank-2 {
+      border-color: #c0c0c0;
+      box-shadow: 0 0 15px rgba(192, 192, 192, 0.5);
+      order: 1;
+    }
+    .vip-card.rank-3 {
+      border-color: #cd7f32;
+      box-shadow: 0 0 15px rgba(205, 127, 50, 0.5);
+      order: 3;
+    }
+
+    .rank-badge {
+      position: absolute;
+      top: -15px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #ffd700;
+      color: #000;
+      font-weight: 900;
+      font-size: 14px;
+      padding: 4px 16px;
+      border-radius: 20px;
+      letter-spacing: 1px;
+    }
+    .rank-2 .rank-badge { background: #c0c0c0; }
+    .rank-3 .rank-badge { background: #cd7f32; color: #fff; }
+
+    .vip-name {
+      margin-top: 10px;
+      font-size: 20px;
+      font-weight: bold;
+      color: #ffffff;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .vip-subtitle {
+      font-size: 12px;
+      color: #f0abfc;
+      margin-top: 4px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 1. サイリウムメーター（目標達成ゲージ） -->
+  <div class="penlight-container">
+    <div class="penlight-header">
+      <span class="penlight-title">🔮 会場満員ペンライトメーター</span>
+      <span class="penlight-count">13,000 / 20,000 PT</span>
+    </div>
+    <div class="gauge-bg">
+      <div class="gauge-fill"></div>
+    </div>
+  </div>
+
+  <!-- 2. 本日の最前列（VIP姫名札フレーム） -->
+  <div class="vip-container">
+    
+    <!-- 2位 -->
+    <div class="vip-card rank-2">
+      <div class="rank-badge">VIP 2ND</div>
+      <div class="vip-name">姫リスナーB 様</div>
+      <div class="vip-subtitle">最前列アリーナ席</div>
+    </div>
+
+    <!-- 1位（中央） -->
+    <div class="vip-card rank-1">
+      <div class="rank-badge">👑 VIP 1ST</div>
+      <div class="vip-name">姫リスナーA 様</div>
+      <div class="vip-subtitle">センター最前列確定</div>
+    </div>
+
+    <!-- 3位 -->
+    <div class="vip-card rank-3">
+      <div class="rank-badge">VIP 3RD</div>
+      <div class="vip-name">姫リスナーC 様</div>
+      <div class="vip-subtitle">最前列アリーナ席</div>
+    </div>
+
+  </div>
+
+</body>
+</html>
